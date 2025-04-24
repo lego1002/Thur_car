@@ -2,6 +2,9 @@ import time
 import math
 from collections import deque
 
+
+#test
+
 class ABEncoder:
     def __init__(self, pulses_per_phase_per_rev=11):
         self.counts_per_rev = pulses_per_phase_per_rev * 4  # 4x decoding
