@@ -4,7 +4,7 @@ import math
 class ABEncoder:
     def __init__(self, pulses_per_phase_per_rev=11):
         self.counts_per_rev = pulses_per_phase_per_rev * 4  # 4x decoding
-        self.countor = 0
+        self.counter = 0
         self.last_state = 0b00  # (A << 1) | B
 
         # 4-bit transition key: (old_state << 2) | new_state : delta
@@ -19,29 +19,34 @@ class ABEncoder:
         #Call this whenever A/B inputs change
         current_state = (a << 1) | b
         transition = (self.last_state << 2) | current_state
-        print(f"Transition: {transition:04b}°")
         delta = self.lookup.get(transition, 0)
-        self.countor += delta
+
+        if(delta == 0):
+            print(f"Transition: Exception")
+        else:
+            print(f"Transition: {transition:}")
+
+        self.counter += delta
         self.last_state = current_state
 
     def reset(self):
-        self.countor = 0
+        self.counter = 0
 
-    def get_countor(self):
-        #Return current ABEncoder countor
-        return self.countor
+    def get_counter(self):
+        #Return current ABEncoder counter
+        return self.counter
 
     def get_degrees(self):
         #Return current rotation in degrees
-        return (self.countor / self.counts_per_rev) * 360
+        return (self.counter / self.counts_per_rev) * 360
     
     def get_radians(self):
         #Return current rotation in radians
-        return (self.countor / self.counts_per_rev) * (2 * math.pi)
+        return (self.counter / self.counts_per_rev) * (2 * math.pi)
 
     def get_revolutions(self):
         #Return total revolutions (can be negative)
-        return self.countor / self.counts_per_rev
+        return self.counter / self.counts_per_rev
 
 
 #---------------------------------------------------------------------------------
@@ -68,8 +73,12 @@ try:
             values = lines.get_values()
             a_val, b_val = values[0], values[1]
             encoder.update(a_val, b_val)
+            #degrees = encoder.get_degrees()
+            #counter = encoder.get_counter()
+            #print(f"Angle: {degrees:.2f}°")
+            #print(f"Angle: {counter:.2f}°")
         else:
-            print("Timeout waiting for encoder change.")
+            print("Waiting for encoder change.")
 
 except KeyboardInterrupt:
     print("Stopping encoder reading.")
