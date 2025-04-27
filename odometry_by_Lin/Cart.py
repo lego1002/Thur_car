@@ -1,4 +1,8 @@
 import time
+import numpy as np
+import Helper
+import ABEncoder
+from
 
 class RobotTimeController:
     """
@@ -94,7 +98,16 @@ class RobotTimeController:
 
         # ontime → no sleep, loop continues immediately
 
-    def update_sensor(self):   pass
+    def update_sensor(self):
+        start_time = time.perf_counter()  # high-precision timer
+        samples = []
+
+        while (time.perf_counter() - start_time) < 0.0003:  # 0.3 ms = 0.0003 seconds
+            value = self.read_sensor()  # <-- you'll need to define how you get a single sensor value
+            samples.append(value)
+
+        samples_array = np.array(samples)
+        self.sensor_mean = np.mean(samples_array)
     def update_odometry(self): pass
     def update_motor(self):    pass
     def upload_status(self):   pass
