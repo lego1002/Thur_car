@@ -22,7 +22,7 @@ class ABEncoder:
         delta = self.lookup.get(transition, 0)
 
         if(delta != 0):
-            print(f"Transition: {transition:}")
+            print(f"Transition: {transition:04b}")
 
         self.counter += delta
         self.last_state = current_state
