@@ -21,9 +21,7 @@ class ABEncoder:
         transition = (self.last_state << 2) | current_state
         delta = self.lookup.get(transition, 0)
 
-        if(delta == 0):
-            print(f"Transition: Exception")
-        else:
+        if(delta != 0):
             print(f"Transition: {transition:}")
 
         self.counter += delta
