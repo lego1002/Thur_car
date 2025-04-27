@@ -19,6 +19,7 @@ class ABEncoder:
         #Call this whenever A/B inputs change
         current_state = (a << 1) | b
         transition = (self.last_state << 2) | current_state
+        print(f"Transition: {transition:}°")
         delta = self.lookup.get(transition, 0)
         self.countor += delta
         self.last_state = current_state
@@ -67,10 +68,6 @@ try:
             values = lines.get_values()
             a_val, b_val = values[0], values[1]
             encoder.update(a_val, b_val)
-            degrees = encoder.get_degrees()
-            countor = encoder.get_countor()
-            print(f"Angle: {degrees:.2f}°")
-            print(f"Angle: {countor:.2f} times")
         else:
             print("Timeout waiting for encoder change.")
 
