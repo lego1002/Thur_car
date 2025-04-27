@@ -19,7 +19,7 @@ class ABEncoder:
         #Call this whenever A/B inputs change
         current_state = (a << 1) | b
         transition = (self.last_state << 2) | current_state
-        print(f"Transition: {transition:}°")
+        print(f"Transition: {transition:04b}°")
         delta = self.lookup.get(transition, 0)
         self.countor += delta
         self.last_state = current_state
