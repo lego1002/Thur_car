@@ -26,6 +26,10 @@ class ABEncoder:
     def reset(self):
         self.countor = 0
 
+    def get_countor(self):
+        #Return current ABEncoder countor
+        return self.countor
+
     def get_degrees(self):
         #Return current rotation in degrees
         return (self.countor / self.counts_per_rev) * 360
@@ -64,7 +68,9 @@ try:
             a_val, b_val = values[0], values[1]
             encoder.update(a_val, b_val)
             degrees = encoder.get_degrees()
+            countor = encoder.get_countor()
             print(f"Angle: {degrees:.2f}°")
+            print(f"Angle: {countor:.2f} times")
         else:
             print("Timeout waiting for encoder change.")
 
