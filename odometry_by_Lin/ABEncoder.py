@@ -5,7 +5,7 @@ class ABEncoder:
     def __init__(self, pulses_per_phase_per_rev=11, debounce_time=0.001):
         self.counts_per_rev = pulses_per_phase_per_rev * 4  # 4x decoding #
         
-        self.last_time = time.time()
+        self.last_time = time.perf_counter()
         self.debouce_time = debounce_time
         self.min_interval = 0.00001 # --100kHz -> 0.00001s ---------------#
 
@@ -36,17 +36,16 @@ class ABEncoder:
     # The update method of the A/B Encoder
     # =================================================================== #
     def update(self, a: int, b: int):
-        current_time = time.time()
+        current_time = time.perf_counter()
         dt = current_time - self.last_time
 
         current_state = (a << 1) | b
         key = (self.last_state, current_state)
         delta = self.lookup.get(key, 0)
-        self.counter += delta
 
         if dt >= self.debounce_time:
             self.counter += delta
-            self.vel_counter = delta / (dt if (dt > self.min_interval) else self.min_interval)
+            self.vel_counter = delta / max(dt, self.min_interval)
             self.last_state = current_state
             self.last_time = current_time
         else:
