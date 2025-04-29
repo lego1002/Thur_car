@@ -18,7 +18,6 @@ class CartOdometry:
 
     def update(self):
         theta = self.pos[2]
-        omaga = self.vel[2]
 
         # Get encoder readings
         left_deg = self.left_encoder.get_radians()
