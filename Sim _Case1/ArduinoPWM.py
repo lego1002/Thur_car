@@ -1,5 +1,6 @@
 import serial
 import time
+from Helper import Helpers
 
 class ArduinoPWMController:
     def __init__(self, port='/dev/ttyACM0', baudrate=9600, timeout=2):
@@ -19,8 +20,8 @@ class ArduinoPWMController:
 
     def send_pwm(self, pwm1: int, pwm2: int):
         if self.ser and self.ser.is_open:
-            pwm1 = max(0, min(255, pwm1))
-            pwm2 = max(0, min(255, pwm2))
+            pwm1 = Helpers.bound(-255, 255, pwm1)
+            pwm2 = Helpers.bound(-255, 255, pwm1)
             data = f"{pwm1},{pwm2}\n"
             self.ser.write(data.encode('utf-8'))
             print(f"[DEBUG] Sent: {data.strip()}")
