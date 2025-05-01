@@ -28,7 +28,7 @@ def main():
     controller = ArduinoPWMController('/dev/ttyACM0')
     controller.connect()
 
-    case1 = Case1(2,4,6,5,5)
+    case1 = Case1(2,4,6,5,0)
 
     # Initialize odometry
     odometry = CartOdometry(
