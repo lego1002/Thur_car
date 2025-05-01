@@ -38,7 +38,7 @@ def main():
     )
 
     # Initialize PID motor controllers
-    pid = PIDController(0, 255)
+    pid = PIDController(-255, 255)
 
     left_motor = Motor()
     right_motor = Motor()
@@ -69,7 +69,7 @@ def main():
             pid1 = pid.update(vel_mag[0], 1, 0, 0, v, 0.001)
             pid2 = pid.update(vel_mag[1], 1, 0, 0, w, 0.001)
 
-            left_motor.pwm, right_motor.pwm = Helpers.compute_pwm_from_velocity(pid1, pid2, 8.1, 15.2, 1)
+            left_motor.pwm, right_motor.pwm += Helpers.compute_pwm_from_velocity(pid1, pid2, 8.1, 15.2, 1)
             
             controller.send_pwm(left_motor.pwm, right_motor.pwm)
 
