@@ -1,0 +1,50 @@
+// uno_motor_control.ino
+const int IN1 = 10, IN2 = 9, ENA = 5;
+const int IN3 = 11, IN4 = 8, ENB = 6;
+
+int leftPWM = 0;
+int rightPWM = 0;
+String inputString = "";
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  // 預設單方向轉
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+
+void loop() {
+  while (Serial.available()) {
+    char inChar = (char)Serial.read();
+    if (inChar == '\n') {
+      parseAndApplyPWM(inputString);
+      inputString = "";
+    } else {
+      inputString += inChar;
+    }
+  }
+}
+
+void parseAndApplyPWM(String input) {
+  int lIndex = input.indexOf("L:");
+  int rIndex = input.indexOf("R:");
+
+  if (lIndex != -1 && rIndex != -1) {
+    leftPWM = input.substring(lIndex + 2, input.indexOf(" ", lIndex)).toInt();
+    rightPWM = input.substring(rIndex + 2).toInt();
+
+    leftPWM = constrain(leftPWM, 0, 255);
+    rightPWM = constrain(rightPWM, 0, 255);
+
+    analogWrite(ENA, leftPWM);
+    analogWrite(ENB, rightPWM);
+  }
+}
