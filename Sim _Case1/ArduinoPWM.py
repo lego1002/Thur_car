@@ -14,7 +14,7 @@ class ArduinoPWMController:
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             time.sleep(2)  # 等待 Arduino 重啟
-            print(f"[INFO] Connected to Arduino on {self.port}")
+            #print(f"[INFO] Connected to Arduino on {self.port}")
         except serial.SerialException as e:
             print(f"[ERROR] Failed to connect to Arduino: {e}")
 
@@ -24,7 +24,7 @@ class ArduinoPWMController:
             pwm2 = Helpers.bound(-255, 255, pwm1)
             data = f"{pwm1},{pwm2}\n"
             self.ser.write(data.encode('utf-8'))
-            print(f"[DEBUG] Sent: {data.strip()}")
+            #print(f"[DEBUG] Sent: {data.strip()}")
         else:
             print("[ERROR] Serial connection not available.")
 
