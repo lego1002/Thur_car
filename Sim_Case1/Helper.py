@@ -144,3 +144,13 @@ class Helpers:
         a[2] = round(a[0] * 360.0 /  (2 * math.pi), b)
 
         return a
+
+    @staticmethod
+    def Wheel_Omega_to_PWM(a: float, b: float, k: float):
+        pwm_left = a * k
+        pwm_right = b * k
+
+        pwm_left = Helpers.bound(-255, 255, pwm_left)
+        pwm_right = Helpers.bound(-255, 255, pwm_right)
+
+        return [pwm_left, pwm_right]
