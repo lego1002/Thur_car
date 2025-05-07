@@ -22,8 +22,8 @@ def main():
     RIGHT_PIN_B = 6 #determined
 
     # Initialize encoder readers
-    left_encoder = EncoderReader(CHIP_NAME, LEFT_PIN_A, LEFT_PIN_B)
-    right_encoder = EncoderReader(CHIP_NAME, RIGHT_PIN_A, RIGHT_PIN_B)
+    left_encoder = EncoderReader(CHIP_NAME, LEFT_PIN_A, LEFT_PIN_B, 380)
+    right_encoder = EncoderReader(CHIP_NAME, RIGHT_PIN_A, RIGHT_PIN_B, 370)
     
     controller = ArduinoPWMController('/dev/ttyACM0')
     controller.connect()
@@ -32,7 +32,7 @@ def main():
 
     # Initialize odometry
     odometry = CartOdometry(
-        8.1, 15.2,
+        4.1, 16.0,
         left_encoder.get_angle_rad(),
         right_encoder.get_angle_rad()
     )
@@ -62,13 +62,13 @@ def main():
                 ode_input, dur
             )
 
-            print(f"pose: {Helpers.to_deg_and_round(odometry.get_pose()), 2}")
-            print(f"velocity: {Helpers.to_deg_and_round(odometry.get_velocity()), 2}")
+            #print(f"pose: {Helpers.to_deg_and_round(odometry.get_pose(), 2)}")
+            #print(f"velocity: {Helpers.to_deg_and_round(odometry.get_velocity(), 2)}")
 
             last_time = current_time
 
             # Simulate control loop delay
-            time.sleep(0.0008)  # 0.8ms as T
+            time.sleep(0.01)  # 1ms as T
 
     except KeyboardInterrupt:
         print("Shutting down.")

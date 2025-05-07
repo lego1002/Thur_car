@@ -28,17 +28,25 @@ class CartOdometry:
         d_left = (left_rad - self.last_left_rad) * self.R
         d_right = (right_rad - self.last_right_rad) * self.R
         d_avg = (d_right + d_left) / 2.0
-        dtheta = (d_right - d_left) / self.L
+        d_diff = (d_right - d_left) / 2.0
+        
+        print(theta)
 
         # Estimate new position
-        pos0 = self.pos[0] + (d_avg * math.cos(theta + dtheta / 2.0))
-        pos1 = self.pos[1] + (d_avg * math.sin(theta + dtheta / 2.0))
-        pos2 = dtheta
+        pos0 = self.pos[0] + (d_avg * math.cos(theta))
+        pos1 = self.pos[1] + (d_avg * math.sin(theta))
+        pos2 = self.pos[2] + (d_diff / self.L)
+        
 
         # Estimate new velocity
         self.vel[0] = (pos0 - self.pos[0]) / dt
         self.vel[1] = (pos1 - self.pos[1]) / dt
         self.vel[2] = (pos2 - self.pos[2]) / dt 
+        
+        #Rewrite the new position
+        self.pos[0] = pos0
+        self.pos[1] = pos1
+        self.pos[2] = pos2 
 
         self.last_left_rad = left_rad
         self.last_right_rad = right_rad

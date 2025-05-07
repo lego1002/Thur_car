@@ -3,7 +3,7 @@ import gpiod
 import time
 
 CHIP = 'gpiochip4'
-PIN_A, PIN_B = 22, 23
+PIN_A, PIN_B = 5, 6
 DEBOUNCE = 0.002   # 2ms 去彈跳
 
 chip = gpiod.Chip(CHIP)
