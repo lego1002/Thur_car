@@ -15,15 +15,15 @@ def main():
     awake()
 
     # Replace these with actual GPIO chip and pins
-    CHIP_NAME = "gpiochip0"
-    LEFT_PIN_A = 5
-    LEFT_PIN_B = 6
-    RIGHT_PIN_A = 22
-    RIGHT_PIN_B = 23 #determined
+    CHIP_NAME = "gpiochip4"
+    LEFT_PIN_A = 23
+    LEFT_PIN_B = 22
+    RIGHT_PIN_A = 5
+    RIGHT_PIN_B = 6 #determined
 
     # Initialize encoder readers
-    left_encoder = EncoderReader(CHIP_NAME, LEFT_PIN_A, LEFT_PIN_B)
-    right_encoder = EncoderReader(CHIP_NAME, RIGHT_PIN_A, RIGHT_PIN_B)
+    left_encoder = EncoderReader(CHIP_NAME, LEFT_PIN_A, LEFT_PIN_B,260)
+    right_encoder = EncoderReader(CHIP_NAME, RIGHT_PIN_A, RIGHT_PIN_B,350)
     
     controller = ArduinoPWMController('/dev/ttyACM0')
     controller.connect()
@@ -58,8 +58,8 @@ def main():
                 ode_input
             )
 
-            print("pose:" + odometry.get_pose())
-            print("velocity:" + odometry.get_velocity())
+            print(f"pose: {Helpers.to_deg_and_round(odometry.get_pose())}")
+            print(f"velocity:{Helpers.to_deg_and_round(odometry.get_velocity())}")
 
             
             # Simulate control loop delay

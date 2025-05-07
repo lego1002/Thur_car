@@ -134,3 +134,13 @@ class Helpers:
         output0 = [pwm_left, pwm_right]
 
         return output0
+        
+    @staticmethod
+    def to_deg_and_round(a: np.array):
+        if len(a) != 3: return
+        
+        a[0] = round(a[0], 3)
+        a[1] = round(a[1], 3)
+        a[2] = round(a[0] * 360.0 /  (2 * math.pi), 3)
+
+        return a
