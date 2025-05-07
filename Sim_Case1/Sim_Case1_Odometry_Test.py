@@ -15,11 +15,11 @@ def main():
     awake()
 
     # Replace these with actual GPIO chip and pins
-    CHIP_NAME = "gpiochip0"
-    LEFT_PIN_A = 5
-    LEFT_PIN_B = 6
-    RIGHT_PIN_A = 22
-    RIGHT_PIN_B = 23 #determined
+    CHIP_NAME = "gpiochip4"
+    LEFT_PIN_A = 23
+    LEFT_PIN_B = 22
+    RIGHT_PIN_A = 5
+    RIGHT_PIN_B = 6 #determined
 
     # Initialize encoder readers
     left_encoder = EncoderReader(CHIP_NAME, LEFT_PIN_A, LEFT_PIN_B)
@@ -44,6 +44,7 @@ def main():
     right_motor = Motor()
 
     start_time = time.perf_counter()
+    last_time = time.perf_counter()
 
     try:
         while True:
@@ -51,17 +52,21 @@ def main():
             left_encoder.update()
             right_encoder.update()
 
-            ode_input = np.array([left_encoder.get_angle_rad(), right_encoder.get_angle_rad(), left_encoder.get_omega_rad(), right_encoder.get_omega_rad()])
+            ode_input = np.array([left_encoder.get_angle_rad(), right_encoder.get_angle_rad()])
+
+            current_time = time.perf_counter()
+            dur = current_time - last_time
 
             # Update odometry with current angles
             odometry.update(
-                ode_input
+                ode_input, dur
             )
 
-            print("pose:" + odometry.get_pose())
-            print("velocity:" + odometry.get_velocity())
+            print(f"pose: {Helpers.to_deg_and_round(odometry.get_pose()), 2}")
+            print(f"velocity: {Helpers.to_deg_and_round(odometry.get_velocity()), 2}")
 
-            
+            last_time = current_time
+
             # Simulate control loop delay
             time.sleep(0.0008)  # 0.8ms as T
 
